@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Staff Directory</title>
+    <style>
+        :root {
+            --bg: #f7fafc;
+            --card: #fff;
+            --muted: #6b7280;
+            --accent: #2563eb;
+            --radius: 10px;
+            font-family: Inter, system-ui, Segoe UI, Roboto, "Helvetica Neue", Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #0f172a;
+            line-height: 1.45
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: #fff;
+            border-bottom: 1px solid #e6edf3
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.125rem
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .controls input[type="search"],
+        .controls select {
+            padding: 8px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: #fff;
+            min-width: 160px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 24px auto;
+            padding: 0 18px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 14px;
+            box-shadow: 0 4px 12px rgba(2, 6, 23, 0.06);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 10px;
+            object-fit: cover;
+            flex: 0 0 64px
+        }
+
+        .meta {
+            flex: 1
+        }
+
+        .name {
+            font-weight: 600;
+            margin: 0 0 4px
+        }
+
+        .role {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin: 0 0 8px
+        }
+
+        .contact {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .chip {
+            background: #eef2ff;
+            color: #1e40af;
+            padding: 6px 8px;
+            border-radius: 999px;
+            font-size: 0.8rem
+        }
+
+        .actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px
+        }
+
+        button {
+            border: 0;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer
+        }
+
+        button.ghost {
+            background: #fff;
+            color: var(--accent);
+            border: 1px solid #dbeafe
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 0.9rem
+        }
+
+        footer {
+            max-width: 1100px;
+            margin: 18px auto;
+            padding: 0 18px;
+            color: var(--muted);
+            font-size: 0.9rem
+        }
+
+        /* modal */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 6, 23, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px
+        }
+
+        .modal {
+            background: var(--card);
+            border-radius: 12px;
+            max-width: 720px;
+            width: 100%;
+            padding: 18px;
+            box-shadow: 0 12px 32px rgba(2, 6, 23, 0.2)
+        }
+
+        .modal h2 {
+            margin: 0 0 8px
+        }
+
+        .modal .grid {
+            grid-template-columns: 120px 1fr
+        }
+
+        .close {
+            background: #ef4444
+        }
+
+        @media (max-width:520px) {
+            header {
+                padding: 12px
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch
+            }
+
+            .card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center
+            }
+
+            .meta {
+                text-align: center
+            }
+
+            .actions {
+                margin-left: 0;
+                width: 100%;
+                justify-content: center
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Staff Directory</h1>
+        <div class="controls" role="search" aria-label="Search staff">
+            <input id="q" type="search" placeholder="Search by name or skill…" aria-label="Search staff">
+            <select id="roleFilter" aria-label="Filter by role">
+                <option value="">All roles</option>
+                <option>Engineering</option>
+                <option>Product</option>
+                <option>Design</option>
+                <option>People Ops</option>
+                <option>Marketing</option>
+            </select>
+            <select id="sortBy" aria-label="Sort staff">
+                <option value="name">Sort: Name</option>
+                <option value="role">Sort: Role</option>
+            </select>
+        </div>
+    </header>
+
+    <main>
+        <section id="list" class="grid" aria-live="polite">
+            <!-- cards will be injected here -->
+        </section>
+    </main>
+
+    <footer>
+        Showing <span id="count">0</span> team members.
+    </footer>
+
+    <!-- modal -->
+    <div id="backdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal" role="document">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <h2 id="modalName">Profile</h2>
+                <button id="close" class="close" aria-label="Close">Close</button>
+            </div>
+            <div class="grid" style="gap:12px">
+                <img id="modalAvatar" src="" alt=""
+                    style="width:100%;max-width:120px;border-radius:12px;object-fit:cover">
+                <div>
+                    <p id="modalRole" class="muted"></p>
+                    <p id="modalBio" style="margin:6px 0"></p>
+                    <p style="margin:6px 0"><strong>Email:</strong> <a id="modalEmail" href=""></a></p>
+                    <p style="margin:6px 0"><strong>Phone:</strong> <span id="modalPhone"></span></p>
+                    <div id="modalSkills" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // sample data
+        const STAFF = [
+            { id: 1, name: "Ava Thompson", role: "Engineering", email: "ava@company.com", phone: "+1 555-0101", img: "https://via.placeholder.com/160x160.png?text=A", skills: ["React", "Node.js"], bio: "Full-stack engineer focused on scaling web apps." },
+            { id: 2, name: "Liam Chen", role: "Product", email: "liam@company.com", phone: "+1 555-0102", img: "https://via.placeholder.com/160x160.png?text=L", skills: ["Roadmapping", "Analytics"], bio: "Product manager driving user-centered roadmaps." },
+            { id: 3, name: "Maya Patel", role: "Design", email: "maya@company.com", phone: "+1 555-0103", img: "https://via.placeholder.com/160x160.png?text=M", skills: ["Figma", "UX"], bio: "Designer crafting intuitive experiences." },
+            { id: 4, name: "Noah Garcia", role: "Engineering", email: "noah@company.com", phone: "+1 555-0104", img: "https://via.placeholder.com/160x160.png?text=N", skills: ["Go", "Kubernetes"], bio: "Platform engineer working on infrastructure." },
+            { id: 5, name: "Sofia Rossi", role: "People Ops", email: "sofia@company.com", phone: "+1 555-0105", img: "https://via.placeholder.com/160x160.png?text=S", skills: ["Hiring", "Onboarding"], bio: "People operations and culture lead." }
+        ];
+
+        const listEl = document.getElementById('list');
+        const countEl = document.getElementById('count');
+        const qEl = document.getElementById('q');
+        const roleFilterEl = document.getElementById('roleFilter');
+        const sortByEl = document.getElementById('sortBy');
+
+        function renderCard(person) {
+            const div = document.createElement('article');
+            div.className = 'card';
+            div.tabIndex = 0;
+            div.innerHTML = `
+                <img class="avatar" loading="lazy" src="${person.img}" alt="${person.name}">
+                <div class="meta">
+                    <p class="name">${person.name}</p>
+                    <p class="role">${person.role}</p>
+                    <div class="contact">
+                        <a class="muted" href="mailto:${person.email}">${person.email}</a>
+                        <span class="muted">${person.phone}</span>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="ghost" data-id="${person.id}" aria-label="View ${person.name}">View</button>
+                </div>
+            `;
+            // keyboard: Enter opens modal
+            div.addEventListener('keydown', e => {
+                if (e.key === 'Enter') openModal(person.id);
+            });
+            // view button
+            div.querySelector('button').addEventListener('click', () => openModal(person.id));
+            return div;
+        }
+
+        function openModal(id) {
+            const p = STAFF.find(s => s.id === id);
+            if (!p) return;
+            document.getElementById('modalName').textContent = p.name;
+            document.getElementById('modalRole').textContent = p.role;
+            document.getElementById('modalBio').textContent = p.bio;
+            document.getElementById('modalEmail').textContent = p.email;
+            document.getElementById('modalEmail').href = 'mailto:' + p.email;
+            document.getElementById('modalPhone').textContent = p.phone;
+            document.getElementById('modalAvatar').src = p.img;
+            const skills = document.getElementById('modalSkills');
+            skills.innerHTML = '';
+            p.skills.forEach(s => {
+                const el = document.createElement('span');
+                el.className = 'chip';
+                el.textContent = s;
+                skills.appendChild(el);
+            });
+            const bd = document.getElementById('backdrop');
+            bd.style.display = 'flex';
+            bd.setAttribute('aria-hidden', 'false');
+            document.getElementById('close').focus();
+        }
+
+        function closeModal() {
+            const bd = document.getElementById('backdrop');
+            bd.style.display = 'none';
+            bd.setAttribute('aria-hidden', 'true');
+        }
+
+        document.getElementById('close').addEventListener('click', closeModal);
+        document.getElementById('backdrop').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        function applyFilters() {
+            const q = qEl.value.trim().toLowerCase();
+            const role = roleFilterEl.value;
+            const sortBy = sortByEl.value;
+            let filtered = STAFF.filter(p => {
+                let matchQ = q === '' || (p.name + ' ' + p.skills.join(' ') + ' ' + p.role).toLowerCase().includes(q);
+                let matchRole = role === '' || p.role === role;
+                return matchQ && matchRole;
+            });
+            if (sortBy === 'name') filtered.sort((a, b) => a.name.localeCompare(b.name));
+            if (sortBy === 'role') filtered.sort((a, b) => a.role.localeCompare(b.role));
+            listEl.innerHTML = '';
+            filtered.forEach(p => listEl.appendChild(renderCard(p)));
+            countEl.textContent = filtered.length;
+        }
+
+        // wire inputs
+        qEl.addEventListener('input', debounce(applyFilters, 200));
+        roleFilterEl.addEventListener('change', applyFilters);
+        sortByEl.addEventListener('change', applyFilters);
+
+        // simple debounce
+        function debounce(fn, ms) {
+            let t;
+            return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+        }
+
+        // initial render
+        applyFilters();
+    </script>
+</body>
+
+</html>
