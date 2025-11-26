@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Product — Simple Landing Page</title>
+    <meta name="description" content="A clean, responsive landing page template." />
+    <style>
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #6ee7b7;
+            --muted: #94a3b8;
+            --white: #e6eef8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --radius: 12px;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(180deg, #071026 0%, #071428 45%, #06101a 100%);
+            color: var(--white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.45;
+        }
+
+        .container {
+            width: min(1100px, 94%);
+            margin: 0 auto;
+            padding: 28px 0
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 10px 0
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700
+        }
+
+        .logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), #60a5fa);
+            display: inline-grid;
+            place-items: center;
+            color: #062024;
+            font-weight: 800;
+            font-size: 18px;
+            box-shadow: 0 6px 18px rgba(6, 32, 36, 0.18), inset 0 -4px 10px rgba(255, 255, 255, 0.04);
+        }
+
+        nav {
+            display: flex;
+            gap: 18px;
+            align-items: center
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px
+        }
+
+        nav a:hover {
+            color: var(--white)
+        }
+
+        .cta-btn {
+            background: linear-gradient(90deg, var(--accent), #60a5fa);
+            color: #04201b;
+            padding: 10px 14px;
+            border-radius: 9px;
+            border: 0;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(40, 200, 160, 0.08);
+        }
+
+        /* Hero */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 480px;
+            gap: 36px;
+            align-items: center;
+            margin: 36px 0
+        }
+
+        .hero h1 {
+            font-size: clamp(30px, 4.4vw, 44px);
+            margin: 0 0 12px
+        }
+
+        .hero p {
+            color: var(--muted);
+            margin: 0 0 18px;
+            font-size: 16px
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 14px;
+            border-radius: 9px;
+            color: var(--white);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .hero-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+            backdrop-filter: blur(6px);
+        }
+
+        .mock {
+            width: 100%;
+            height: 320px;
+            border-radius: 12px;
+            background:
+                linear-gradient(135deg, rgba(96, 165, 250, 0.08), rgba(110, 231, 183, 0.06));
+            display: grid;
+            place-items: center;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 13px;
+            border: 1px dashed rgba(255, 255, 255, 0.03)
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 36px 0
+        }
+
+        .feature {
+            background: var(--glass);
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            display: grid;
+            place-items: center;
+            color: var(--accent);
+            flex: 0 0 48px;
+            font-weight: 800;
+        }
+
+        .feature h3 {
+            margin: 0 0 6px;
+            font-size: 16px
+        }
+
+        .feature p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        /* CTA strip */
+        .cta-strip {
+            margin: 36px 0;
+            padding: 20px;
+            border-radius: 12px;
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.08), rgba(110, 231, 183, 0.04));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        /* Footer */
+        footer {
+            padding: 28px 0;
+            color: var(--muted);
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px
+        }
+
+        /* Responsive */
+        @media (max-width:900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 24px
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                gap: 12px
+            }
+
+            nav {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="brand">
+                <div class="logo">LP</div>
+                <div>
+                    <div style="font-weight:800">Product</div>
+                    <div style="font-size:12px;color:var(--muted);margin-top:2px">Beautifully simple</div>
+                </div>
+            </div>
+
+            <nav aria-label="Main navigation">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+                <button class="cta-btn" onclick="scrollToSection('contact')">Get Started</button>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero" aria-labelledby="hero-heading">
+                <div>
+                    <h1 id="hero-heading">Build faster. Launch sooner. Delight customers.</h1>
+                    <p>Modern components, accessible markup, and a focused design system to help your team ship polished
+                        experiences.</p>
+                    <div class="btn-row" role="toolbar" aria-label="Primary actions">
+                        <button class="cta-btn" onclick="scrollToSection('contact')">Start Free Trial</button>
+                        <button class="secondary" onclick="scrollToSection('features')">Explore Features</button>
+                    </div>
+
+                    <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
+                        <div
+                            style="background:rgba(255,255,255,0.02);padding:10px 12px;border-radius:10px;font-weight:700;color:var(--white)">
+                            Trusted by 3,200+ teams</div>
+                        <div
+                            style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--muted)">
+                            99.9% uptime</div>
+                    </div>
+                </div>
+
+                <aside class="hero-card" aria-hidden="false">
+                    <div class="mock" role="img" aria-label="Product preview">
+                        Live preview / mockup
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:14px;gap:12px">
+                        <div style="flex:1">
+                            <div style="font-weight:700">Fast onboarding</div>
+                            <div style="color:var(--muted);font-size:13px">Get started in minutes with templates and
+                                guides.</div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:8px;min-width:120px">
+                            <div
+                                style="background:rgba(255,255,255,0.03);padding:8px;border-radius:8px;text-align:center;font-weight:700">
+                                A/B Test</div>
+                            <div
+                                style="background:rgba(255,255,255,0.03);padding:8px;border-radius:8px;text-align:center;font-weight:700">
+                                Analytics</div>
+                        </div>
+                    </div>
+                </aside>
+            </section>
+
+            <section id="features" class="features" aria-labelledby="features-heading">
+                <h2 id="features-heading" style="grid-column:1/-1;margin:0 0 6px;font-size:18px">Core features</h2>
+
+                <div class="feature" role="article">
+                    <div class="icon">⚡</div>
+                    <div>
+                        <h3>Performance first</h3>
+                        <p>Optimized bundles, pragmatic defaults, and progressive enhancement for all users.</p>
+                    </div>
+                </div>
+
+                <div class="feature" role="article">
+                    <div class="icon">🔒</div>
+                    <div>
+                        <h3>Enterprise-grade security</h3>
+                        <p>Secure defaults, encryption in transit, and access controls for teams of any size.</p>
+                    </div>
+                </div>
+
+                <div class="feature" role="article">
+                    <div class="icon">⚙️</div>
+                    <div>
+                        <h3>Customizable</h3>
+                        <p>Design tokens and component primitives make it easy to match your brand and workflow.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-strip" style="align-items:center">
+                <div>
+                    <div style="font-weight:800">Ready to ship your next idea?</div>
+                    <div style="color:var(--muted);font-size:13px">Start a free trial and invite your team.</div>
+                </div>
+                <div>
+                    <button class="cta-btn" onclick="scrollToSection('contact')">Get started — it's free</button>
+                </div>
+            </section>
+
+            <section id="contact" style="margin-top:18px" aria-labelledby="contact-heading">
+                <h2 id="contact-heading" style="margin:0 0 12px;font-size:18px">Contact / Start trial</h2>
+                <form id="signup" style="display:flex;gap:12px;flex-wrap:wrap" onsubmit="handleSubmit(event)">
+                    <input type="email" required placeholder="Your email" aria-label="Email"
+                        style="flex:1;min-width:220px;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--white)">
+                    <input type="text" placeholder="Company (optional)" aria-label="Company"
+                        style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--white)">
+                    <button class="cta-btn" type="submit" style="padding:12px 16px;border-radius:10px">Start free
+                        trial</button>
+                </form>
+                <div id="message" role="status" style="margin-top:12px;color:var(--accent);display:none"></div>
+            </section>
+        </main>
+
+        <footer>
+            <div>© <span id="year"></span> Product — All rights reserved</div>
+            <div style="display:flex;gap:12px">
+                <a href="#" style="color:var(--muted);text-decoration:none">Privacy</a>
+                <a href="#" style="color:var(--muted);text-decoration:none">Terms</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Simple helpers
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const msg = document.getElementById('message');
+            msg.style.display = 'block';
+            msg.textContent = 'Thanks — check your inbox for a confirmation email.';
+            // clear form
+            e.target.reset?.();
+            // hide after 5s
+            setTimeout(() => msg.style.display = 'none', 5000);
+        }
+
+        // set year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+
+</html>
